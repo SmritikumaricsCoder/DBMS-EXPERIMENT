@@ -1,3 +1,1 @@
-# Perform the Following Queries\
 
-#

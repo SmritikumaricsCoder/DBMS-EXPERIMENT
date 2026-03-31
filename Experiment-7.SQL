@@ -1,0 +1,57 @@
+# Perform the following Queries
+
+#  1. Compute number of days remaining in this year
+SELECT DATEDIFF(DATE(CONCAT(YEAR(CURDATE()), '-12-31')), CURDATE()) AS days_remaining_in_year;
+
+#  2. Highest salary, Lowest salary & Difference
+SELECT
+    MAX(sal) AS highest_salary,
+    MIN(sal) AS lowest_salary,
+    MAX(sal) - MIN(sal) AS salary_difference
+FROM employee;
+
+#  3. Employees whose commission > 25% of salary
+SELECT ename, sal, comm FROM employee
+WHERE comm > 0.25 * sal;
+
+#  4. Display salary in Dollar format
+SELECT ename, sal, CONCAT('$', FORMAT(sal, 2)) AS salary_in_dollars FROM employee;
+
+#  5. Matrix Query (Pivot Style) Salary per job based on department
+SELECT
+    job,
+    SUM(CASE WHEN deptno = 10 THEN sal ELSE 0 END) AS dept10,
+    SUM(CASE WHEN deptno = 20 THEN sal ELSE 0 END) AS dept20,
+    SUM(CASE WHEN deptno = 30 THEN sal ELSE 0 END) AS dept30,
+    SUM(CASE WHEN deptno = 40 THEN sal ELSE 0 END) AS dept40,
+    SUM(sal) AS total_salary
+FROM employee
+GROUP BY job;
+
+#  6. Total employees & employees hired per year
+SELECT
+    COUNT(*) AS total_employees,
+    SUM(CASE WHEN YEAR(hiredate)=1980 THEN 1 ELSE 0 END) AS y1980,
+    SUM(CASE WHEN YEAR(hiredate)=1981 THEN 1 ELSE 0 END) AS y1981,
+    SUM(CASE WHEN YEAR(hiredate)=1982 THEN 1 ELSE 0 END) AS y1982,
+    SUM(CASE WHEN YEAR(hiredate)=1983 THEN 1 ELSE 0 END) AS y1983
+FROM employee;
+
+#  7. Query to get Last Sunday of Any Month Example → February 2026
+SELECT LAST_DAY('2026-02-01') - INTERVAL (WEEKDAY(LAST_DAY('2026-02-01')) + 1) DAY AS last_sunday_feb_2026;
+
+#  8. Department numbers & total employees per department
+SELECT deptno, COUNT(*) AS total_employees
+FROM employee
+GROUP BY deptno;
+
+#  9. Jobs & total employees per job
+SELECT job, COUNT(*) AS total_employees
+FROM employee
+GROUP BY job;
+
+#  10. Department numbers & total salary per department
+SELECT deptno, SUM(sal) AS total_salary
+FROM employee
+GROUP BY deptno;
+
